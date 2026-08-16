@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sopar Sinurat — Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F5F6FB;
+    --ink: #10163A;
+    --muted: #5B6178;
+    --orange: #FF7A33;
+    --red: #D8455C;
+    --navy: #10163A;
+    --yellow: #FFC93C;
+    --line: #E6E7F2;
+    --card: #FFFFFF;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color:inherit; text-decoration:none; }
+  h1,h2,h3{ font-family:'Sora', sans-serif; }
+  ::selection{ background: var(--orange); color:#fff; }
+  :focus-visible{ outline: 2px solid var(--orange); outline-offset:3px; }
+
+  .wrap{ max-width: 1120px; margin:0 auto; padding: 0 28px; }
+
+  /* NAV */
+  header{
+    position: sticky; top:0; z-index: 100;
+    background: rgba(245,246,251,0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 28px; max-width:1120px; margin:0 auto;
+  }
+  .logo{
+    display:flex; align-items:center; gap:8px;
+    font-family:'Sora', sans-serif; font-weight:700; font-size:19px;
+  }
+  .logo-mark{
+    width:30px; height:30px; border-radius:50%;
+    background: conic-gradient(from 180deg, var(--orange), var(--yellow), var(--orange));
+  }
+  .navlinks{ display:flex; gap: 30px; font-size: 14.5px; font-weight:600; }
+  .navlinks a{ color: var(--muted); position:relative; padding-bottom:4px; transition: color .15s ease; }
+  .navlinks a:hover, .navlinks a.active{ color: var(--ink); }
+  .navlinks a.active::after{
+    content:""; position:absolute; left:0; right:0; bottom:-2px; height:2px; background: var(--orange);
+  }
+  .navtoggle{ display:none; background:none; border:none; font-size:22px; color:var(--ink); }
+
+  @media (max-width: 780px){
+    .navlinks{ display:none; }
+    .navtoggle{ display:block; }
+  }
+
+  /* HERO */
+  .hero{
+    position: relative;
+    overflow: hidden;
+    padding: 90px 0 70px;
+  }
+  #netCanvas{
+    position:absolute; inset:0; width:100%; height:100%; z-index:0; opacity:.55;
+  }
+  .hero-inner{
+    position: relative; z-index: 2;
+    display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items:center;
+  }
+  .eyebrow-text{ color: var(--muted); font-size:15px; margin-bottom:6px; }
+  .hero h1{
+    font-size: 44px; font-weight:800; line-height:1.15; margin-bottom: 14px;
+  }
+  .hero h1 .accent{ color: var(--orange); }
+  .typed-line{
+    font-size: 19px; font-weight:600; color: var(--ink); margin-bottom: 26px; min-height: 28px;
+  }
+  .typed-line .typed{ color: var(--red); }
+  .cursor{
+    display:inline-block; width:2px; height:20px; background: var(--red);
+    margin-left:2px; vertical-align: middle; animation: blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .btn-primary{
+    display:inline-flex; align-items:center; gap:8px;
+    background: var(--navy); color:#fff;
+    padding: 13px 26px; border-radius: 30px;
+    font-weight:700; font-size: 14.5px;
+    border: none; cursor:pointer;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .btn-primary:hover{ background:#1c2456; transform: translateY(-2px); }
+
+  .socials{ display:flex; gap:12px; margin-top: 26px; }
+  .socials a{
+    width: 38px; height:38px; border-radius:50%;
+    background: var(--navy); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .socials a svg{ display:block; }
+  .socials a:hover{ background: var(--orange); transform: translateY(-3px); }
+
+  /* AVATAR */
+  .avatar-wrap{ display:flex; justify-content:center; position:relative; z-index:2; }
+  .avatar-circle{
+    width: 320px; height:320px; border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, var(--yellow), #FFB13C 70%);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 30px 60px -20px rgba(255,138,60,0.45);
+  }
+
+  /* SECTION SHARED */
+  section{ padding: 80px 0; }
+  .section-head{ text-align:center; margin-bottom: 44px; }
+  .section-head .eyebrow{
+    color: var(--orange); font-weight:700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+  }
+  .section-head h2{ font-size: 30px; font-weight:800; margin-top: 8px; }
+
+  /* ABOUT */
+  .about-grid{ display:grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; align-items:center; }
+  .about-photo{
+    width:100%; aspect-ratio: 1; border-radius: 24px;
+    background: linear-gradient(135deg, var(--yellow), var(--orange));
+  }
+  .about-text p{ color: var(--muted); margin-bottom: 16px; }
+  .about-facts{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+  .fact{ font-size: 14px; }
+  .fact b{ display:block; color: var(--ink); }
+  .fact span{ color: var(--muted); }
+
+  /* SKILLS */
+  .skills-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 20px; }
+  .skill-card{
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px;
+  }
+  .skill-top{ display:flex; justify-content: space-between; margin-bottom: 10px; font-weight:600; font-size:14.5px; }
+  .skill-bar{ height:8px; border-radius: 20px; background: var(--line); overflow:hidden; }
+  .skill-bar i{ display:block; height:100%; background: linear-gradient(90deg, var(--orange), var(--yellow)); border-radius: 20px; }
+
+  /* EDUCATION / TIMELINE */
+  .timeline{ position:relative; padding-left: 28px; border-left: 2px solid var(--line); }
+  .tl-item{ position: relative; margin-bottom: 32px; }
+  .tl-item::before{
+    content:""; position:absolute; left:-34px; top:4px; width:12px; height:12px; border-radius:50%; background: var(--orange); border: 3px solid var(--bg);
+  }
+  .tl-year{ color: var(--orange); font-weight:700; font-size:13px; margin-bottom:4px; }
+  .tl-title{ font-weight:700; font-size: 16px; margin-bottom:2px; }
+  .tl-sub{ color: var(--muted); font-size: 14px; }
+
+  /* WORK / PROJECTS */
+  .work-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 22px; }
+  .work-card{
+    background: var(--card); border:1px solid var(--line); border-radius: 18px; overflow:hidden;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .work-card:hover{ transform: translateY(-4px); border-color: var(--orange); }
+  .work-thumb{ height: 140px; background: linear-gradient(135deg, var(--navy), #2C3570); }
+  .work-body{ padding: 20px; }
+  .work-title{ font-weight:700; font-size:16px; margin-bottom:6px; }
+  .work-desc{ color: var(--muted); font-size: 13.5px; margin-bottom: 14px; }
+  .work-tags{ display:flex; gap:8px; flex-wrap:wrap; }
+  .tag{ font-size:11.5px; font-weight:600; padding:4px 10px; border-radius: 20px; background: #FFF1E8; color: var(--orange); }
+
+  /* CONTACT */
+  .contact-box{
+    background: var(--navy); border-radius: 24px; padding: 50px 40px;
+    display:grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items:center; color:#fff;
+  }
+  .contact-box h2{ color:#fff; font-size: 26px; margin-bottom: 10px; }
+  .contact-box p{ color: #B9BEDB; font-size: 14.5px; margin-bottom: 20px; }
+  .contact-list{ display:flex; flex-direction:column; gap:14px; }
+  .contact-list a{ display:flex; align-items:center; gap:10px; color:#fff; font-size:14.5px; }
+  .contact-list .ic{
+    width:34px; height:34px; border-radius:50%; background: rgba(255,255,255,0.1);
+    display:flex; align-items:center; justify-content:center; font-size:14px;
+  }
+  .btn-light{
+    display:inline-flex; background:#fff; color: var(--navy); padding:13px 26px; border-radius:30px;
+    font-weight:700; font-size:14.5px; border:none; cursor:pointer;
+  }
+
+  footer{ text-align:center; padding: 28px 0; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+
+  @media (max-width: 860px){
+    .hero-inner, .about-grid, .contact-box{ grid-template-columns: 1fr; }
+    .avatar-wrap{ order:-1; }
+    .avatar-circle{ width:220px; height:220px; }
+    .hero h1{ font-size: 32px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cursor{ animation:none; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="logo-mark"></span> Nama</div>
+    <div class="navlinks">
+      <a href="#home" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="navtoggle" aria-label="Menu">☰</button>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <canvas id="netCanvas"></canvas>
+  <div class="wrap hero-inner">
+    <div>
+      <div class="eyebrow-text">Hi There,</div>
+      <h1>I'm Sopar <span class="accent">Sinurat</span></h1>
+      <div class="typed-line">I Am Into <span class="typed" id="typedText"></span><span class="cursor"></span></div>
+      <button class="btn-primary">About Me →</button>
+      <div class="socials">
+        <a href="#" aria-label="LinkedIn" target="_blank">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.58c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.68H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+        </a>
+        <a href="#" aria-label="GitHub" target="_blank">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.5c0 5 3.24 9.24 7.75 10.74.57.1.78-.25.78-.55v-2.14c-3.15.68-3.81-1.34-3.81-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.66 1.23 3.31.94.1-.73.4-1.23.72-1.51-2.52-.29-5.16-1.26-5.16-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.13 1.16a10.9 10.9 0 0 1 5.7 0c2.17-1.47 3.13-1.16 3.13-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.35-2.65 5.31-5.18 5.59.41.35.77 1.04.77 2.1v3.11c0 .3.21.66.79.55A11.02 11.02 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg>
+        </a>
+        <a href="#" aria-label="Twitter / X" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.57L23.3 22h-6.94l-5.44-7.12L4.66 22H1.5l8.03-9.18L1 2h7.1l4.92 6.5L18.9 2zm-1.22 18.1h1.72L6.4 3.79H4.55L17.68 20.1z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram" target="_blank">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.55.22.95.47 1.36.88.41.41.66.81.88 1.36.16.42.36 1.06.41 2.23.06 1.27.07 1.64.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.55-.47.95-.88 1.36-.41.41-.81.66-1.36.88-.42.16-1.06.36-2.23.41-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.68 3.68 0 0 1-1.36-.88 3.68 3.68 0 0 1-.88-1.36c-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.64-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.55.47-.95.88-1.36.41-.41.81-.66 1.36-.88.42-.16 1.06-.36 2.23-.41 1.27-.06 1.64-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.87 5.87 0 0 0-2.12 1.38A5.87 5.87 0 0 0 .64 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.57 2.91.32.79.75 1.46 1.38 2.12.66.63 1.32 1.06 2.12 1.38.76.31 1.64.51 2.91.57C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.57a5.87 5.87 0 0 0 2.12-1.38 5.87 5.87 0 0 0 1.38-2.12c.31-.76.51-1.64.57-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.57-2.91a5.87 5.87 0 0 0-1.38-2.12A5.87 5.87 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="avatar-wrap">
+      <div class="avatar-circle">
+        <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+          <circle cx="90" cy="70" r="34" fill="#3A2B22"/>
+          <circle cx="90" cy="78" r="28" fill="#F2B98C"/>
+          <path d="M62 65c0-16 12-28 28-28s28 12 28 28" stroke="#3A2B22" stroke-width="10" fill="none"/>
+          <rect x="55" y="120" width="70" height="55" rx="14" fill="#4C6EF5"/>
+          <circle cx="126" cy="112" r="10" fill="#F2B98C"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Tentang</div>
+      <h2>Kenalan yuk</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-photo"></div>
+      <div class="about-text">
+        <p>Saya <strong>Sopar Sinurat</strong>, seorang web developer yang senang membangun produk digital dari konsep sampai jadi — mulai dari tampilan yang enak dipakai sampai sistem di baliknya yang jalan mulus.</p>
+        <p>Selalu penasaran sama teknologi baru dan suka kerja bareng tim yang punya semangat sama untuk bikin sesuatu yang berguna.</p>
+        <div class="about-facts">
+          <div class="fact"><b>Nama</b><span>Sopar Sinurat</span></div>
+          <div class="fact"><b>Domisili</b><span>Medan, Indonesia</span></div>
+          <div class="fact"><b>Email</b><span>ssinuratxx@email.com</span></div>
+          <div class="fact"><b>Status</b><span>Pelajar</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Skill</div>
+      <h2>Yang saya kuasai</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="skill-top"><span>HTML &amp; CSS</span><span>90%</span></div><div class="skill-bar"><i style="width:90%"></i></div></div>
+      <div class="skill-card"><div class="skill-top"><span>JavaScript</span><span>85%</span></div><div class="skill-bar"><i style="width:85%"></i></div></div>
+      <div class="skill-card"><div class="skill-top"><span>React</span><span>80%</span></div><div class="skill-bar"><i style="width:80%"></i></div></div>
+      <div class="skill-card"><div class="skill-top"><span>Node.js</span><span>75%</span></div><div class="skill-bar"><i style="width:75%"></i></div></div>
+      <div class="skill-card"><div class="skill-top"><span>SQL</span><span>70%</span></div><div class="skill-bar"><i style="width:70%"></i></div></div>
+      <div class="skill-card"><div class="skill-top"><span>Git</span><span>85%</span></div><div class="skill-bar"><i style="width:85%"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Pendidikan</div>
+      <h2>Perjalanan belajar</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">2022 — Sekarang</div>
+        <div class="tl-title">Nama Universitas</div>
+        <div class="tl-sub">S1 Teknik Informatika</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2024 — 2027</div>
+        <div class="tl-title">Smk Negri 1 Pantai Labu</div>
+        <div class="tl-sub">Jurusan / Teknik Sepeda Motor</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Karya</div>
+      <h2>Proyek pilihan</h2>
+    </div>
+    <div class="work-grid">
+      <div class="work-card">
+        <div class="work-thumb"></div>
+        <div class="work-body">
+          <div class="work-title">Nama Proyek Satu</div>
+          <div class="work-desc">Deskripsi singkat tentang proyek dan masalah yang diselesaikan.</div>
+          <div class="work-tags"><span class="tag">React</span><span class="tag">Node.js</span></div>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"></div>
+        <div class="work-body">
+          <div class="work-title">Nama Proyek Dua</div>
+          <div class="work-desc">Deskripsi singkat tentang proyek dan masalah yang diselesaikan.</div>
+          <div class="work-tags"><span class="tag">Next.js</span><span class="tag">MongoDB</span></div>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"></div>
+        <div class="work-body">
+          <div class="work-title">Nama Proyek Tiga</div>
+          <div class="work-desc">Deskripsi singkat tentang proyek dan masalah yang diselesaikan.</div>
+          <div class="work-tags"><span class="tag">Vue</span><span class="tag">Firebase</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <div>
+        <h2>Yuk ngobrol</h2>
+        <p>Ada proyek atau ide yang mau didiskusikan? Kabari saya, saya senang diajak ngobrol.</p>
+        <button class="btn-light">Kirim Email</button>
+      </div>
+      <div class="contact-list">
+        <a href="mailto:ssinuratxx@email.com"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M2 4h20v16H2V4zm2 2v.01L12 12l8-5.99V6H4zm16 2.24-7.4 5.55a1 1 0 0 1-1.2 0L4 8.24V18h16V8.24z"/></svg></span> ssinuratxx@email.com</a>
+        <a href="#" target="_blank"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M20.45 20.45h-3.56v-5.58c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.68H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></span> linkedin.com/in/sopar</a>
+        <a href="#" target="_blank"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M12 .5C5.73.5.98 5.24.98 11.5c0 5 3.24 9.24 7.75 10.74.57.1.78-.25.78-.55v-2.14c-3.15.68-3.81-1.34-3.81-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.66 1.23 3.31.94.1-.73.4-1.23.72-1.51-2.52-.29-5.16-1.26-5.16-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.13 1.16a10.9 10.9 0 0 1 5.7 0c2.17-1.47 3.13-1.16 3.13-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.35-2.65 5.31-5.18 5.59.41.35.77 1.04.77 2.1v3.11c0 .3.21.66.79.55A11.02 11.02 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg></span> github.com/ssinuratxx</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Sopar. Semua hak dilindungi.</footer>
+
+<script>
+  // Efek mengetik
+  const roles = ["Web Development", "Backend Development", "UI/UX Design"];
+  const typedEl = document.getElementById('typedText');
+  let ri = 0, ci = 0, deleting = false;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function typeLoop(){
+    const current = roles[ri];
+    if(!deleting){
+      ci++;
+      typedEl.textContent = current.slice(0, ci);
+      if(ci === current.length){ deleting = true; setTimeout(typeLoop, 1200); return; }
+    } else {
+      ci--;
+      typedEl.textContent = current.slice(0, ci);
+      if(ci === 0){ deleting = false; ri = (ri+1) % roles.length; }
+    }
+    setTimeout(typeLoop, deleting ? 40 : 80);
+  }
+  if(prefersReduced){ typedEl.textContent = roles[0]; } else { typeLoop(); }
+
+  // Animasi jaringan partikel di hero
+  const canvas = document.getElementById('netCanvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+
+  function resize(){
+    const hero = canvas.parentElement;
+    w = canvas.width = hero.offsetWidth;
+    h = canvas.height = hero.offsetHeight;
+  }
+  function initParticles(){
+    const count = Math.min(60, Math.floor(w/22));
+    particles = Array.from({length: count}, () => ({
+      x: Math.random()*w, y: Math.random()*h,
+      vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4
+    }));
+  }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle = '#B9BFE0';
+    for(const p of particles){
+      p.x += p.vx; p.y += p.vy;
+      if(p.x<0||p.x>w) p.vx*=-1;
+      if(p.y<0||p.y>h) p.vy*=-1;
+      ctx.beginPath(); ctx.arc(p.x,p.y,2,0,Math.PI*2); ctx.fill();
+    }
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const a=particles[i], b=particles[j];
+        const d = Math.hypot(a.x-b.x, a.y-b.y);
+        if(d<120){
+          ctx.strokeStyle = `rgba(185,191,224,${1-d/120})`;
+          ctx.lineWidth=1;
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+    }
+    if(!prefersReduced) requestAnimationFrame(draw);
+  }
+  resize(); initParticles();
+  if(!prefersReduced) draw(); else draw();
+  window.addEventListener('resize', () => { resize(); initParticles(); });
+</script>
+
+</body>
+</html>
