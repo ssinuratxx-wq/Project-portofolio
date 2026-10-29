@@ -592,13 +592,13 @@ body.dark-theme {
 
 .home__bg-design {
   position: absolute;
-  inset: -1.5rem;
+  inset: -1.25rem;
   background-image: url("../img/photo-bg.jpg");
   background-size: cover;
   background-position: center;
-  border-radius: 1.5rem;
+  border-radius: 1.25rem;
   z-index: 1;
-  opacity: 0.9;
+  overflow: hidden;
   -webkit-transition: opacity 0.4s;
   transition: opacity 0.4s;
 }
@@ -607,17 +607,18 @@ body.dark-theme {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 1.5rem;
   background: linear-gradient(
     160deg,
-    rgba(0, 0, 0, 0.15),
-    rgba(0, 0, 0, 0.55)
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.45)
   );
 }
 
 .home__img {
   position: relative;
-  z-index: 10;
+  z-index: 3;
+  border-radius: 0.75rem;
+  display: block;
 }
 
 .home__shadow {
@@ -628,7 +629,7 @@ body.dark-theme {
   right: -0.75rem;
   background-color: var(--container-color);
   border: 4px solid var(--black-color);
-  z-index: 5;
+  z-index: 2;
   -webkit-transition: background-color 0.4s;
   -moz-transition: background-color 0.4s;
   -ms-transition: background-color 0.4s;
